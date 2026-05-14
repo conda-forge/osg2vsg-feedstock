@@ -8,9 +8,11 @@ package:
 source:
   - url: https://github.com/vsg-dev/osg2vsg/archive/v{{ version }}.tar.gz
     sha256: 784ca5b8712fa66207bafcf6e71d41494e82d0a0ee65aa75cec6f8ebbc6a28f0
+    patches:
+      - patches/0001-Use-current-vsg-mipmap-property.patch
 
 build:
-  number: 0
+  number: 1
   run_exports:
     - {{ pin_subpackage('osg2vsg', max_pin='x.x') }}
 
@@ -40,6 +42,14 @@ test:
     - if not exist %PREFIX%\\Library\\lib\\osg2vsg.lib exit 1  # [win]
     - if not exist %PREFIX%\\Library\\bin\\osg2vsg.dll exit 1  # [win]
     - if not exist %PREFIX%\\Library\\lib\\cmake\\osg2vsg\\osg2vsgConfig.cmake exit 1  # [win]
+  requires:
+    - {{ compiler("c") }}
+    - {{ compiler("cxx") }}
+    - cmake
+    - ninja  # [unix]
+    - pkgconfig  # [linux]
+  files:
+    - tests/
 
 about:
   home: https://vsg-dev.github.io/vsg-dev.io/
